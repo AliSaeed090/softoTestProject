@@ -1,0 +1,1 @@
+export const rootUrl ='https://my-json-server.typicode.com'
