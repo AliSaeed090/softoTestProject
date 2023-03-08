@@ -25,6 +25,7 @@ function App() {
     (state: RootState) => state.Products
   );
   const [list, setList] = useState<any>([]);
+  const [filteredList, setFilteredList] = useState<any>([]);
   const [color, setColor] = React.useState("");
   const [total, settotal] = React.useState(0);
 
@@ -41,6 +42,7 @@ function App() {
         };
       });
       setList(arr);
+      setFilteredList(arr);
     }
   }, [productsList]);
 
@@ -72,6 +74,7 @@ function App() {
       }
 
       setList(arr);
+      setFilteredList(arr);
     },
     [list]
   );
@@ -79,18 +82,12 @@ function App() {
   const handleChange = (event: SelectChangeEvent) => {
     setColor(event.target.value);
     if (event.target.value === "") {
-      let arr = productsList.map((x: ProductInterface) => {
-        return { ...x, Qty: 0, total: x.price * 0 };
-      });
-      setList(arr);
+      setFilteredList(list);
     } else {
-      let arr = productsList.filter(
+      let arr = list.filter(
         (x: ProductInterface) => x.colour === event.target.value
       );
-      arr = arr.map((x: ProductInterface) => {
-        return { ...x, Qty: 0, total: x.price * 0 };
-      });
-      setList(arr);
+      setFilteredList(arr);
     }
   };
 
@@ -99,9 +96,11 @@ function App() {
       <AppBarCompnent />
       <Container maxWidth="lg">
         <div style={{ height: 10 }}></div>
-        <FormControl sx={{ m: 1, minWidth: 200 }}>
+        
+        <FormControl   data-testid="Select" sx={{ m: 1, minWidth: 200 }}>
           <FormHelperText>Colour Filter</FormHelperText>
           <Select
+            
             value={color}
             onChange={handleChange}
             displayEmpty
@@ -129,11 +128,13 @@ function App() {
             <CircularProgress />
           </div>
         )}
-        {list.map((x: ProductInterface, i: number) => (
-          <div key={x.id} style={{ margin: 10 }}>
-            <CartList data={x} index={i} updateQty={updateQty} />
-          </div>
-        ))}
+        {(filteredList.length ? filteredList : list).map(
+          (x: ProductInterface, i: number) => (
+            <li style={{listStyle:"none", margin: 10 }}   key={x.id}  >
+              <CartList data={x} index={i} updateQty={updateQty} />
+            </li>
+          )
+        )}
         {loading === false && (
           <Grid container spacing={2}>
             <Grid item xs={8}></Grid>

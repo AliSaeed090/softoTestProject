@@ -1,6 +1,8 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { get } from "../services/api";
 import { ProductInterface } from "../../utilities/Interface";
+import { rootUrl } from "../../utilities/constants";
+
 interface ProductsState {
   loading: boolean;
   productsList: Array<ProductInterface>;
@@ -9,10 +11,10 @@ export const getProducts = createAsyncThunk(
   "benirvingplt/products/products",
   async () => {
     try {
-      const response = await get("/benirvingplt/products/products");
+      const response = await get(`${rootUrl}/benirvingplt/products/products`);
       return response.data;
     } catch (err: any) {
-      console.log({ errorz: err.response });
+      console.log({ errorz: err.message });
       throw err;
     }
   }

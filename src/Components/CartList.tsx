@@ -96,9 +96,11 @@ function CartList(props: Props) {
                   style={{
                     padding: 10,
                     textAlign: "center",
-                    cursor: "pointer",
+                    border:"0px",
+                    backgroundColor:"transparent",
+                    cursor:"pointer"
                   }}
-                  component="div"
+                  component="button"
                   variant="subtitle1"
                 >
                   Remove
